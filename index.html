@@ -92,7 +92,7 @@
     <p id="resultText"></p>
     <p id="answerText"></p>
 
-    <p class="info-text">이 게임은 모니터에서 사용하기 위한 것으로, 실제 인쇄된 색상과는 다를 수 있습니다.</p>
+    <p class="info-text">화면의 색상은 사용자의 모니터 설정에 따라 실제 인쇄 된 색상과 다르게 보일 수 있습니다.</p>
 
     <script>
         function cmykToRgb(c, m, y, k) {
@@ -188,7 +188,7 @@
             let y = document.getElementById('yellowSlider').value;
             let k = document.getElementById('blackSlider').value;
 
-            let answerText = `Target CMYK: (${targetColor.c}, ${targetColor.m}, ${targetColor.y}, ${targetColor.k})\nYour CMYK: (${c}, ${m}, ${y}, ${k})`;
+            let answerText = `주어진 CMYK: (${targetColor.c}, ${targetColor.m}, ${targetColor.y}, ${targetColor.k})\n당신의 CMYK: (${c}, ${m}, ${y}, ${k})`;
             document.getElementById('answerText').innerText = answerText;
         }
 
