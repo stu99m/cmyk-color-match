@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMYK 색채 맞추기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .color-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+        }
+        #targetColor, #userColor {
+            width: 120px;
+            height: 120px;
+            margin: 0 10px;
+            border: 2px solid #000;
+        }
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .slider-label {
+            width: 70px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .slider {
+            width: 300px;
+        }
+        .number-input {
+            width: 60px;
+            margin-left: 10px;
+        }
+        .info-text {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .button-container button {
+            display: block;
+            width: 150px;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>CMYK 색채 맞추기</h1>
+    
+    <div class="color-container">
+        <div id="targetColor"></div>
+        <div id="userColor"></div>
+    </div>
+    
+    <p>이 색을 맞춰봐!</p>
+    
+    <div class="slider-container">
+        <label for="cyanSlider" class="slider-label">Cyan</label>
+        <input type="range" id="cyanSlider" class="slider" min="0" max="100">
+        <input type="number" id="cyanNumber" class="number-input" min="0" max="100">
+    </div>
+    <div class="slider-container">
+        <label for="magentaSlider" class="slider-label">Magenta</label>
+        <input type="range" id="magentaSlider" class="slider" min="0" max="100">
+        <input type="number" id="magentaNumber" class="number-input" min="0" max="100">
+    </div>
+    <div class="slider-container">
+        <label for="yellowSlider" class="slider-label">Yellow</label>
+        <input type="range" id="yellowSlider" class="slider" min="0" max="100">
+        <input type="number" id="yellowNumber" class="number-input" min="0" max="100">
+    </div>
+    <div class="slider-container">
+        <label for="blackSlider" class="slider-label">Black</label>
+        <input type="range" id="blackSlider" class="slider" min="0" max="100">
+        <input type="number" id="blackNumber" class="number-input" min="0" max="100">
+    </div>
+    
+    <div class="button-container">
+        <button onclick="checkColor()">Check Color</button>
+        <button onclick="showAnswer()">Answer Sheet</button>
+        <button onclick="newColor()">New Color</button>
+    </div>
+
+    <p id="resultText"></p>
+    <p id="answerText"></p>
+
+    <p class="info-text">이 게임은 모니터에서 사용하기 위한 것으로, 실제 인쇄된 색상과는 다를 수 있습니다.</p>
+
+    <script>
+        function cmykToRgb(c, m, y, k) {
+            let r = 255 * (1 - c / 100) * (1 - k / 100);
+            let g = 255 * (1 - m / 100) * (1 - k / 100);
+            let b = 255 * (1 - y / 100) * (1 - k / 100);
+            return { r: Math.round(r), g: Math.round(g), b: Math.round(b) };
+        }
+
+        let targetColor = {
+            c: Math.floor(Math.random() * 101),
+            m: Math.floor(Math.random() * 101),
+            y: Math.floor(Math.random() * 101),
+            k: Math.floor(Math.random() * 101)
+        };
+
+        function setTargetColor() {
+            let rgb = cmykToRgb(targetColor.c, targetColor.m, targetColor.y, targetColor.k);
+            document.getElementById('targetColor').style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+        }
+
+        function newColor() {
+            targetColor = {
+                c: Math.floor(Math.random() * 101),
+                m: Math.floor(Math.random() * 101),
+                y: Math.floor(Math.random() * 101),
+                k: Math.floor(Math.random() * 101)
+            };
+            setTargetColor();
+            document.getElementById('resultText').innerText = "";
+            document.getElementById('answerText').innerText = "";
+        }
+
+        function updateUserColor() {
+            let c = document.getElementById('cyanSlider').value;
+            let m = document.getElementById('magentaSlider').value;
+            let y = document.getElementById('yellowSlider').value;
+            let k = document.getElementById('blackSlider').value;
+            let rgb = cmykToRgb(c, m, y, k);
+            document.getElementById('userColor').style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+        }
+
+        function syncSlidersAndNumbers(sliderId, numberId) {
+            let slider = document.getElementById(sliderId);
+            let numberInput = document.getElementById(numberId);
+
+            slider.addEventListener('input', function() {
+                numberInput.value = slider.value;
+                updateUserColor();
+            });
+
+            numberInput.addEventListener('input', function() {
+                slider.value = numberInput.value;
+                updateUserColor();
+            });
+        }
+
+        syncSlidersAndNumbers('cyanSlider', 'cyanNumber');
+        syncSlidersAndNumbers('magentaSlider', 'magentaNumber');
+        syncSlidersAndNumbers('yellowSlider', 'yellowNumber');
+        syncSlidersAndNumbers('blackSlider', 'blackNumber');
+
+        function checkColor() {
+            let c = parseInt(document.getElementById('cyanSlider').value);
+            let m = parseInt(document.getElementById('magentaSlider').value);
+            let y = parseInt(document.getElementById('yellowSlider').value);
+            let k = parseInt(document.getElementById('blackSlider').value);
+
+            let cDiff = targetColor.c - c;
+            let mDiff = targetColor.m - m;
+            let yDiff = targetColor.y - y;
+            let kDiff = targetColor.k - k;
+
+            let totalDiff = Math.abs(cDiff) + Math.abs(mDiff) + Math.abs(yDiff) + Math.abs(kDiff);
+
+            let resultText;
+
+            if (totalDiff === 0) {
+                resultText = "PERFECT! 눈썰미가 아주 끝내주네요!";
+            } else {
+                resultText = `차이값: Cyan(${cDiff > 0 ? '+' + cDiff : cDiff}), Magenta(${mDiff > 0 ? '+' + mDiff : mDiff}), Yellow(${yDiff > 0 ? '+' + yDiff : yDiff}), Black(${kDiff > 0 ? '+' + kDiff : kDiff})`;
+                if (Math.abs(cDiff) <= 10 && Math.abs(mDiff) <= 10 && Math.abs(yDiff) <= 10 && Math.abs(kDiff) <= 10) {
+                    resultText += " (GOOD! 잘했어요!)";
+                }
+            }
+            
+            document.getElementById('resultText').innerText = resultText;
+        }
+
+        function showAnswer() {
+            let c = document.getElementById('cyanSlider').value;
+            let m = document.getElementById('magentaSlider').value;
+            let y = document.getElementById('yellowSlider').value;
+            let k = document.getElementById('blackSlider').value;
+
+            let answerText = `Target CMYK: (${targetColor.c}, ${targetColor.m}, ${targetColor.y}, ${targetColor.k})\nYour CMYK: (${c}, ${m}, ${y}, ${k})`;
+            document.getElementById('answerText').innerText = answerText;
+        }
+
+        // 처음 페이지 로드 시 색상 설정
+        setTargetColor();
+    </script>
+</body>
+</html>
