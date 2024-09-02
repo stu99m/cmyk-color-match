@@ -13,12 +13,11 @@
             display: flex;
             justify-content: center;
             margin: 20px auto;
-            flex-wrap: wrap; /* 화면 크기에 따라 자동으로 요소 배치 */
         }
         #targetColor, #userColor {
-            width: 30vw;  /* 화면 너비의 30% */
-            height: 30vw; /* 화면 너비의 30% */
-            margin: 10px;
+            width: 120px;
+            height: 120px;
+            margin: 0 10px;
             border: 2px solid #000;
         }
         .slider-container {
@@ -26,7 +25,6 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 10px;
-            width: 100%; /* 전체 화면 너비에 맞춤 */
         }
         .slider-label {
             width: 70px;
@@ -34,10 +32,10 @@
             margin-right: 10px;
         }
         .slider {
-            width: 70%; /* 슬라이더가 화면의 70%를 차지 */
+            width: 300px;
         }
         .number-input {
-            width: 20%; /* 숫자 입력 칸이 화면의 20%를 차지 */
+            width: 60px;
             margin-left: 10px;
         }
         .info-text {
@@ -113,7 +111,7 @@
 
         function setTargetColor() {
             let rgb = cmykToRgb(targetColor.c, targetColor.m, targetColor.y, targetColor.k);
-            document.getElementById('targetColor').style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+            document.getElementById('targetColor').style.backgroundColor = rgb(${rgb.r}, ${rgb.g}, ${rgb.b});
         }
 
         function newColor() {
@@ -134,7 +132,7 @@
             let y = document.getElementById('yellowSlider').value;
             let k = document.getElementById('blackSlider').value;
             let rgb = cmykToRgb(c, m, y, k);
-            document.getElementById('userColor').style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+            document.getElementById('userColor').style.backgroundColor = rgb(${rgb.r}, ${rgb.g}, ${rgb.b});
         }
 
         function syncSlidersAndNumbers(sliderId, numberId) {
@@ -175,7 +173,7 @@
             if (totalDiff === 0) {
                 resultText = "PERFECT! 눈썰미가 아주 끝내주네요!";
             } else {
-                resultText = `차이값: Cyan(${cDiff > 0 ? '+' + cDiff : cDiff}), Magenta(${mDiff > 0 ? '+' + mDiff : mDiff}), Yellow(${yDiff > 0 ? '+' + yDiff : yDiff}), Black(${kDiff > 0 ? '+' + kDiff : kDiff})`;
+                resultText = 차이값: Cyan(${cDiff > 0 ? '+' + cDiff : cDiff}), Magenta(${mDiff > 0 ? '+' + mDiff : mDiff}), Yellow(${yDiff > 0 ? '+' + yDiff : yDiff}), Black(${kDiff > 0 ? '+' + kDiff : kDiff});
                 if (Math.abs(cDiff) <= 10 && Math.abs(mDiff) <= 10 && Math.abs(yDiff) <= 10 && Math.abs(kDiff) <= 10) {
                     resultText += " (GOOD! 잘했어요!)";
                 }
@@ -190,7 +188,7 @@
             let y = document.getElementById('yellowSlider').value;
             let k = document.getElementById('blackSlider').value;
 
-            let answerText = `주어진 CMYK: (${targetColor.c}, ${targetColor.m}, ${targetColor.y}, ${targetColor.k})\n당신의 CMYK: (${c}, ${m}, ${y}, ${k})`;
+            let answerText = 주어진 CMYK: (${targetColor.c}, ${targetColor.m}, ${targetColor.y}, ${targetColor.k})\n당신의 CMYK: (${c}, ${m}, ${y}, ${k});
             document.getElementById('answerText').innerText = answerText;
         }
 
