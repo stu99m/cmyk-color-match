@@ -111,7 +111,7 @@
 
         function setTargetColor() {
             let rgb = cmykToRgb(targetColor.c, targetColor.m, targetColor.y, targetColor.k);
-            document.getElementById('targetColor').style.backgroundColor = rgb(${rgb.r}, ${rgb.g}, ${rgb.b});
+            document.getElementById('targetColor').style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
         }
 
         function newColor() {
@@ -132,7 +132,7 @@
             let y = document.getElementById('yellowSlider').value;
             let k = document.getElementById('blackSlider').value;
             let rgb = cmykToRgb(c, m, y, k);
-            document.getElementById('userColor').style.backgroundColor = rgb(${rgb.r}, ${rgb.g}, ${rgb.b});
+            document.getElementById('userColor').style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
         }
 
         function syncSlidersAndNumbers(sliderId, numberId) {
@@ -173,7 +173,7 @@
             if (totalDiff === 0) {
                 resultText = "PERFECT! 눈썰미가 아주 끝내주네요!";
             } else {
-                resultText = 차이값: Cyan(${cDiff > 0 ? '+' + cDiff : cDiff}), Magenta(${mDiff > 0 ? '+' + mDiff : mDiff}), Yellow(${yDiff > 0 ? '+' + yDiff : yDiff}), Black(${kDiff > 0 ? '+' + kDiff : kDiff});
+                resultText = `차이값: Cyan(${cDiff > 0 ? '+' + cDiff : cDiff}), Magenta(${mDiff > 0 ? '+' + mDiff : mDiff}), Yellow(${yDiff > 0 ? '+' + yDiff : yDiff}), Black(${kDiff > 0 ? '+' + kDiff : kDiff})`;
                 if (Math.abs(cDiff) <= 10 && Math.abs(mDiff) <= 10 && Math.abs(yDiff) <= 10 && Math.abs(kDiff) <= 10) {
                     resultText += " (GOOD! 잘했어요!)";
                 }
@@ -188,7 +188,7 @@
             let y = document.getElementById('yellowSlider').value;
             let k = document.getElementById('blackSlider').value;
 
-            let answerText = 주어진 CMYK: (${targetColor.c}, ${targetColor.m}, ${targetColor.y}, ${targetColor.k})\n당신의 CMYK: (${c}, ${m}, ${y}, ${k});
+            let answerText = `Target CMYK: (${targetColor.c}, ${targetColor.m}, ${targetColor.y}, ${targetColor.k})\nYour CMYK: (${c}, ${m}, ${y}, ${k})`;
             document.getElementById('answerText').innerText = answerText;
         }
 
